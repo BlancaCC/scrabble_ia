@@ -24,7 +24,7 @@ DATA=./data/
 BIN=./bin/
 SRC=./src/
 
-all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testia.out 
+all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testia.out $(BIN)testcombinaciones.out 
 
 ## ~~~~~~~~~~ binarios de los test ~~~~~~~~~~
 $(BIN)testdiccionario.out: $(OBJ)testdiccionario.o $(OBJ)diccionario.o
@@ -36,6 +36,10 @@ $(BIN)testletras.out: $(OBJ)testletras.o $(OBJ)letras.o $(OBJ)diccionario.o
 $(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o  $(OBJ)letras.o $(OBJ)diccionario.o
 	g++ -g $^ -o $@
 
+$(BIN)testcombinaciones.out: $(OBJ)testcombinaciones.o $(OBJ)combinaciones.o 
+	g++ -g $^ -o $@
+
+
 ## ~~~~~~~~ objetos de los test ~~~~~~~~~~
 $(OBJ)testdiccionario.o: $(SRC)testdiccionario.cpp 
 	g++ -c $< -o $@ -I$(INCLUDE)
@@ -44,6 +48,9 @@ $(OBJ)testletras.o: $(SRC)testletras.cpp
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)testia.o: $(SRC)testia.cpp $(OBJ)ia.o
+	g++ -c $< -o $@ -I$(INCLUDE)
+
+$(OBJ)testcombinaciones.o: $(SRC)testcombinaciones.cpp $(OBJ)combinaciones.o
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 
@@ -55,6 +62,9 @@ $(OBJ)letras.o: $(SRC)letras.cpp $(INCLUDE)letras.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)ia.o: $(SRC)ia.cpp $(INCLUDE)ia.h
+	g++ -c $< -o $@ -I$(INCLUDE)
+
+$(OBJ)combinaciones.o: $(SRC)combinaciones.cpp $(INCLUDE)combinaciones.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 
@@ -79,5 +89,10 @@ testletras:
 
 testia:
 	$(BIN)$@.out <  $(DATA)diccionario1000.txt
+
+testcombinaciones:
+	$(BIN)$@.out
+
+
 
 

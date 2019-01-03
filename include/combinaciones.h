@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+using namespace std; 
+
 /**
    @brief Diseñado en especial  para string :D
    Significado de las variables privadas: 
@@ -38,15 +40,16 @@ class Combinaciones
      @brief amplia la siguiente generación dentro del vector
      @return  true si se ha podido generar, false en caso contrario 
    */
-  
   bool GeneracionSiguiente();
 
   /**
      @brief analiza la siguiente generación
-     Decuelve true si ha encontrado alguna solución 
+     @param resultado, vector con soluciones
+     @param validos, diccionario con comprobaciones
+     @return Devuelve true si ha encontrado alguna solución,
+     false en su defecto 
    */
-
-  bool analisisGeneracion( vector<string> & resultados); 
+  bool analisisGeneracion( vector<string> & resultados, map< unsigned  long int, vector<string> > & validos ); 
   
 }; 
   

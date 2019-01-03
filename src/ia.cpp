@@ -18,7 +18,8 @@ IA:: IA( Diccionario & soluciones, string validas)
 } //~~~~~~~~~~ fin constructor 
 
 
-string IA::devuelveSoluciones()
+//string IA::devuelveSoluciones()
+  
 // ################# funciones privadas ##############
 
 void IA::asignaPrimos( string validas)
@@ -93,8 +94,8 @@ void IA::traduceDiccionario( Diccionario & soluciones)
 	      break; 
 	    }
 	}
-      cout << "Se está leyendo "  << palabra << " código en tabla hash    " << entrada << endl; 
+      // cout << "Se está leyendo "  << palabra << " código en tabla hash    " << entrada << endl; 
       
-      //traduccion_diccionario[ entrada ].push_back( (*cit));
+      traduccion_diccionario[ entrada ].push_back( (*cit));
     }
 } 
