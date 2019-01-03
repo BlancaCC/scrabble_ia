@@ -1,6 +1,7 @@
 /**
-   @brief: Implementación del TDA combinaciones
+   @brief Implementación del TDA combinaciones
    @author Blanca Cano Camarero 
+   @date Enero 2019
  */
 
 #include "combinaciones.h"
@@ -55,15 +56,29 @@ bool Combinaciones::GeneracionSiguiente()
 } //~~~~~~ fin generación siguiente 
 
 
-bool Combinaciones::analisisGeneracion( vector<string> & resultado)
+bool Combinaciones::analisisGeneracion( vector<string> & resultado , IA & ia)
 {
   
   int inicio = ( arbol_combinaciones.back() ).inicio_generacion;
   int fin = ( arbol_combinaciones.back() ).fin_generacion;
 
+  bool encontrado = false;
+  
   for( int combinacion = inicio; combinacion < fin ; combinacion++)
     {
-      //añadir comprobación de si está en la tabla hash
-      cout << arbol_combinaciones[ combinacion].letras << endl; 
+      unsigned long int llave = ia.traduce( arbol_combinaciones[ combinacion].letras);
+      // comprobamos si está en el diccionario
+      if ( ia.traduccion_diccionario.count(llave) )
+	{
+	  vector<string> incidencia = resultadotraduccion_diccionario[llave];
+	  encontrado = true; 
+
+	  ///hacer con un set y luego traducir para evitar repeticiones de soluciones 
+	  resultado.insert(resultado.begin(), incidencia.begin(), incidencia.end() ); 
+	  cout << arbol_combinaciones[ combinacion].letras
+	       << " Se encuentra" << endl; 
+	}
+      
     }
-}
+  return encontrado; 
+} //~~~~~~ analisisGeneracion

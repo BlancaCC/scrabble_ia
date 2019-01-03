@@ -98,4 +98,48 @@ void IA::traduceDiccionario( Diccionario & soluciones)
       
       traduccion_diccionario[ entrada ].push_back( (*cit));
     }
-} 
+}  //~~~~~~~ traduceDiccionario 
+
+unsigned long int IA::traduce ( string validas)
+{unsigned long int
+  unsigned long int indice = 1; 
+  for( int i=0; i< validas.length(); i++)
+    indice *= primos[ validas[i] ];
+
+  return indice; 
+} // traudce 
+
+
+// ########## miembros públicos ############
+
+vector<string> IA::devuelveSoluciones( string letras)
+{
+  Combinaciones C (letras);
+  vector<string> soluciones;
+  bool encontrado = false;
+
+  
+  unsigned long int llave = traduce(letras); 
+  //si se encuentra tal solucion en el diccionario 
+  if(  traduccion_diccionario.count( llave ))
+    {
+      return traduccion_diccionario[llave]; 
+    }
+  if( C.GeneracionSiguiente() && !encontrado  )
+    {
+      encontrado = C.analisisGeneracion( soluciones, (*this) ); 
+    }
+    return vector<string>(); 
+} //~~~~~~ devuelveSoluciones
+
+/*
+  Util a la hora de implementar 
+
+ C.analisisGeneracion(nulo);
+
+  while( C.GeneracionSiguiente())
+    {
+      cout << "=========== otra generación ===========" << endl; 
+      C.analisisGeneracion(nulo);
+    }
+ */

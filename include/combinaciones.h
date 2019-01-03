@@ -49,7 +49,7 @@ class Combinaciones
      @return Devuelve true si ha encontrado alguna solución,
      false en su defecto 
    */
-  bool analisisGeneracion( vector<string> & resultados, map< unsigned  long int, vector<string> > & validos ); 
+  bool analisisGeneracion( vector<string> & resultados, IA & ia); 
   
 }; 
   

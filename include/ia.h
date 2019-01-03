@@ -33,8 +33,23 @@ class IA
   map< char, int> primos;
   map< unsigned  long int, vector<string> > traduccion_diccionario;
 
+  /**
+     @brief A cada caracter válido le asocia un número primo diferente
+   */
   void asignaPrimos(string validas);
+
+  /**
+     @brief traduce las palabras de un diccionario a un primo, 
+     Crea map donde a cada uno de los anteriores primos le asocia una palabra :D
+   */
   void traduceDiccionario( Diccionario & soluciones);
+
+  /**
+     @brief Devuelve el primo asociado a una combinación 
+     @param validad combinacio de letras 
+
+   */
+  unsigned long int traduce( string validas); 
 
  
  public:
@@ -46,9 +61,15 @@ class IA
    */
   IA( Diccionario & soluciones, string validas = "abcdefghijklmnopqrstuvwxyz" );
 
-  string devuelveSoluciones( string letras); 
+  /**
+     @brief Devuelve las soluciones
+     OJO IMPORTANTE QU ECOMBINCACIONES SEA UNA CLASE AMIGA
+     @param String de caracteres con el que hacer las combincaioens
+     @return Devuelve un vector de string con todas las soluciones
+  */
+  vector<string> devuelveSoluciones( string letras); 
 
-  //friend bool Combinaciones.analisisGeneracion; //Hacer esta clase amiga
+  friend  class Combinaciones; //Hacer esta clase amiga
 
     
 }; 
