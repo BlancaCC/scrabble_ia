@@ -48,6 +48,7 @@ class Diccionario
   int size() const;
 
    /**
+#endif //_IA_H
      @brief Obtine todas las palabras en el diccionario de una longitud dada  
      @param longitud: la longitud de las palabras de salida  
      @return un vector con las palabra de la longitud específica del parámetro de entrada 

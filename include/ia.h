@@ -15,7 +15,7 @@
 #include <map>
 
 #include "diccionario.h"
-#include "combinaciones.h"
+//#include "combinaciones.h"
 
 #include <fstream>
 #include <assert.h>
@@ -26,9 +26,11 @@ using namespace std;
    @brief TDA IA Jugador del scrabble
 
  */
-class IA
+//class IA
+Struct Biblioteca 
 {
- private:
+  //private:
+ public: 
   // ~~~~~~~~~~~~ variables y métodos de carga ~~~~~~~~~~~
   map< char, int> primos;
   map< unsigned  long int, vector<string> > traduccion_diccionario;
@@ -59,7 +61,7 @@ class IA
      @param dicccionario, vocabulario del que dispondrá nuestra IA
      @param letras válidas 
    */
-  IA( Diccionario & soluciones, string validas = "abcdefghijklmnopqrstuvwxyz" );
+  Biblioteca( Diccionario & soluciones, string validas = "abcdefghijklmnopqrstuvwxyz" );
 
   /**
      @brief Devuelve las soluciones
@@ -67,12 +69,22 @@ class IA
      @param String de caracteres con el que hacer las combincaioens
      @return Devuelve un vector de string con todas las soluciones
   */
-  vector<string> devuelveSoluciones( string letras); 
+  //vector<string> devuelveSoluciones( string letras); 
 
-  friend  class Combinaciones; //Hacer esta clase amiga
+    /**
+     @brief analiza la siguiente generación
+     @param resultado, vector con soluciones
+     @param validos, diccionario con comprobaciones
+     @return Devuelve true si ha encontrado alguna solución,
+     false en su defecto 
+     NOTA: DEBE DECLARARSE AMIGA, PORQUE SI NO NO HAY MANERA CON EL ENLAZADO
+   
+  bool analisisGeneracion( vector<string> & resultados, auto & ia );
+  */
+  // friend bool analisisGeneracion( vector<string> & resultado , IA & ia, Combinaciones C);
 
     
-}; 
+};
 
 
 

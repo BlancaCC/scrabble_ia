@@ -1,5 +1,6 @@
 /**
    @brief TDA combinaciones sin repetición y sin orden
+   @file combinaciones.h 
    @author Blanca Cano Camarero 
    @date enero 2019
  */
@@ -10,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 
 using namespace std; 
 
@@ -20,37 +22,46 @@ using namespace std;
  */
 struct Elemento
 {
-  string letras;
-  int inicio_generacion;
-  int fin_generacion;
+  
+  string letras;            ///< Combinación de este elemento 
+  int inicio_generacion;    ///< Índice de inicio de la generación en la que se produzco tal combinación 
+  int fin_generacion;       ///< Índice final de la generación 
 
+  /**
+     @brief Constructor de Elemento 
+     @param l letras de la combinación 
+     @param i, corresponde al inicio_generación 
+     @param j : corresponde con el fin de la generación 
+   */
   Elemento( string l, int i=0, int f=1);
+  
 }; 
 
-class Combinaciones
+struct Combinaciones
 {
- private:
-
+  /**
+     @brief Vector cDevuelve vector con la última generación creadaon todas las combinaciones
+   */
   vector<Elemento> arbol_combinaciones;
 
- public:
+  /**
+     @brief constructor de copia
+     @param string sobre el que se quieren calcular las combinaciones sin orden y sin repetición de elementos 
+   */
   Combinaciones( string elementos);
 
   /**
-     @brief amplia la siguiente generación dentro del vector
+     @brief amplia la siguiente generación, añadiéndola al final de arbol_combinaciones
      @return  true si se ha podido generar, false en caso contrario 
    */
   bool GeneracionSiguiente();
 
   /**
-     @brief analiza la siguiente generación
-     @param resultado, vector con soluciones
-     @param validos, diccionario con comprobaciones
-     @return Devuelve true si ha encontrado alguna solución,
-     false en su defecto 
+     @brief Devuelve vector con la última generación creada
+     @return Devuelve vector con la última generación creada
    */
-  bool analisisGeneracion( vector<string> & resultados, IA & ia); 
-  
+  vector<string> UltimaGeneracion() const; 
+
 }; 
-  
+
 #endif  //_COMBINACIONES_H_

@@ -24,15 +24,13 @@
 #include <fstream> //open , close file
 #include <assert.h>
 
-//biblioteca para generar las letras en aleatorio 
-//#include <random>
-//#include <chrono>
+
 
 
 using namespace std;
 
 /**
-   @brief Estructura auxiliar que contiene las propiedases de una letra
+   @brief Estructura auxiliar que contiene las propiedades de una letra
    Contiene los siguientes argumentos: 
    fa: Frecuencia ab
 
@@ -52,6 +50,7 @@ struct Letra
   */
   Letra();
   
+
   /**
      @brief constructor por referencia 
    */
@@ -147,7 +146,15 @@ y en fúnción de su cantidad
 @param n, número de letras a devolver 
    */
 
-  string sacaLetras( int n ); 
+  string sacaLetras( int n );
+
+  /**
+     @brief Devuelve la puntuación de una palabra dada
+     @param palabra
+     @return entero con la puntuacion 
+   */
+
+  int puntuacionAsociada( string palabra); 
     
   ///###################### funciones amigas ################
   /**

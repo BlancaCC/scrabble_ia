@@ -42,6 +42,9 @@ int main( int argc , char* argv [])
   cout << "Esto es lo que se ha cargado del fichero pasado \n" << C2; 
   
   //vamos a pedirle que nos genere un par de letras
-  cout << "Sus letras son " << C.sacaLetras( 8) << endl; 
+  cout << "Sus letras son " << C.sacaLetras( 8) << endl;
+
+  //comprobemo si nos devuelve las puntuaciones de una palabra
+  cout << " La puntuacion de la palabra tomate es " << C.puntuacionAsociada( "tomate") << endl ; 
   
 }

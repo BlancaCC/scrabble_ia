@@ -1,15 +1,15 @@
 /**
-   @file ia.cpp 
+   @file biblioteca.cpp 
    @author Blanca Cano Camarero 
    @brief Implementación de inteligencia artificial para jugar al scrabble 
    @date enero de 2019
  */
 
 
-#include "ia.h"
+#include "biblioteca.h"
 
 //string por defecto "abcdefghijklmnopqrstuwxyz"
-IA:: IA( Diccionario & soluciones, string validas)
+Biblioteca::Biblioteca( Diccionario & soluciones, string validas)
 {
   
   asignaPrimos(validas);
@@ -18,11 +18,11 @@ IA:: IA( Diccionario & soluciones, string validas)
 } //~~~~~~~~~~ fin constructor 
 
 
-//string IA::devuelveSoluciones()
+//string Bliblioteca::devuelveSoluciones()
   
 // ################# funciones privadas ##############
 
-void IA::asignaPrimos( string validas)
+void Biblioteca::asignaPrimos( string validas)
 {
   const string fichero_primos = "./data/primos"; 
   int primos_necesarios = validas.length();
@@ -73,34 +73,20 @@ void IA::asignaPrimos( string validas)
 } //~~~~~~~ fin asigna primos
 
 
-void IA::traduceDiccionario( Diccionario & soluciones)
+void Biblioteca::traduceDiccionario( Diccionario & soluciones)
 {
   for( auto cit = soluciones.cbegin(); cit != soluciones.cend(); cit++)
     {
-      ///< calculamos la entrada de la tabla hash correspondiente
-      ///< resultado de multiplicar cada caracter por su primo asociado
-      string palabra = (*cit); 
-     
-     unsigned long long int entrada = 1;
-      for( int i= 0; i< palabra.length(); i++)
-	{
 
-	  if ( primos.find((*cit)[i] ) != primos.end() )
-	    entrada *= primos[ (*cit)[i] ];
-	  else
-	    {
-	      entrada = 0;
-	      cout << "No se ha enconctrado " << (*cit)[i] << endl;
-	      break; 
-	    }
-	}
-      // cout << "Se está leyendo "  << palabra << " código en tabla hash    " << entrada << endl; 
       
+      ///< calculamos la entrada de la tabla hash correspondiente
+      unsigned long int entrada = traduce((*cit)); 
       traduccion_diccionario[ entrada ].push_back( (*cit));
     }
 }  //~~~~~~~ traduceDiccionario 
 
-unsigned long int IA::traduce ( string validas)
+///< OJO para mejorar la eficiencia algo no se comprueba que el caracter esté registrado en el diccionario de los primos 
+unsigned long int Biblioteca::traduce ( string validas)
 {
   
   unsigned long int indice = 1; 
@@ -111,36 +97,11 @@ unsigned long int IA::traduce ( string validas)
 } // traudce 
 
 
-// ########## miembros públicos ############
-
-vector<string> IA::devuelveSoluciones( string letras)
+Biblioteca & Biblioteca::operator=( const Biblioteca  & B) 
 {
-  Combinaciones C (letras);
-  vector<string> soluciones;
-  bool encontrado = false;
-
+  primos = B.primos;
+  traduccion_diccionario = B.traduccion_diccionario;
   
-  unsigned long int llave = traduce(letras); 
-  //si se encuentra tal solucion en el diccionario 
-  if(  traduccion_diccionario.count( llave ))
-    {
-      return traduccion_diccionario[llave]; 
-    }
-  if( C.GeneracionSiguiente() && !encontrado  )
-    {
-      encontrado = analisisGeneracion( soluciones, (*this), C  ); 
-    }
-    return vector<string>(); 
-} //~~~~~~ devuelveSoluciones
+} //~~~ sobrecarga del operador igual
 
-/*
-  Util a la hora de implementar 
 
- C.analisisGeneracion(nulo);
-
-  while( C.GeneracionSiguiente())
-    {
-      cout << "=========== otra generación ===========" << endl; 
-      C.analisisGeneracion(nulo);
-    }
- */

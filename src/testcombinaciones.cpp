@@ -1,25 +1,51 @@
 /**
    @brief programa de prueba de combinaciones 
-   OJO QUE EN ANÁLISIS GENERACIÓN TODOS LOS RESULTADO SON VÁLIDO 
-Y LO QUE SE HACE ES UN PRINT
+   @author Blanca Cano Camarero 
+   @date Enero 2019
  */
 
 #include "combinaciones.h"
+#include <iostream>
+#include <vector>
+#include <string>
 
 using namespace std;
-
-int main()
+/**
+   @brief Muestra en pantalla la última generación creada de Combinacioness
+   @param C estructura de combinaciones que mostrar en pantalla 
+ */
+void muestraGeneracion( const Combinaciones & C)
 {
-  string letras = "01234";
-  Combinaciones C (letras);
+  vector<string> generacion=  C.UltimaGeneracion();
 
-  vector<string> nulo;
-  cout << "=========== otra generación ===========" << endl; 
-  C.analisisGeneracion(nulo);
-
-  while( C.GeneracionSiguiente())
+  for( int i=0 ; i< generacion.size(); i++)
     {
+      cout << generacion[i] << " " ; 
+    }
+  cout << endl; 
+}
+
+// ~~~~~~~~~~~~~~
+
+
+int main( int argc, char * argv [])
+{
+  //string letras = "01234";
+  vector<string> letras ={"01234", "ABBAB"} ;
+
+  for( int i= 0; i< letras.size(); i++)
+    {
+      cout << " COMBINACIONES DE " << letras[i] << endl; 
+      Combinaciones C (letras[i]);
+      vector<string> nulo;
       cout << "=========== otra generación ===========" << endl; 
-      C.analisisGeneracion(nulo);
+      muestraGeneracion( C); 
+
+      while( C.GeneracionSiguiente())
+	{
+	  cout << "=========== otra generación ===========" << endl; 
+	  muestraGeneracion( C); 
+
+	}
     }
 }

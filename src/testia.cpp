@@ -10,11 +10,29 @@
 #include "diccionario.h"
 using namespace std; 
 
+void muestraSolciones( IA ia, string letras)
+{
+  vector<string > soluciones = ia.mejorSolucion(letras);
+
+  cout << "Soluciones encontradas para:  " << letras <<  endl; 
+  for( auto sol= soluciones.cbegin(); sol != soluciones.cend(); sol++)
+    cout << (*sol) << endl;
+  
+}
+
+
 int main()
 {
   Diccionario D;
   cin >> D;
 
   ///< Prueba del constructor
-  IA ia( D); 
+  bool modo_puntos = false; 
+  IA ia( D, modo_puntos);
+
+  muestraSoluciones( ia, "cola");
+  muestraSoluciones( ia, "bejan");
+  
+  
+  
 }

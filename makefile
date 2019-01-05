@@ -24,7 +24,7 @@ DATA=./data/
 BIN=./bin/
 SRC=./src/
 
-all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testia.out $(BIN)testcombinaciones.out 
+all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testbiblioteca.out  $(BIN)testcombinaciones.out $(BIN)testnuevaia.out  #$(BIN)testia.out
 
 ## ~~~~~~~~~~ binarios de los test ~~~~~~~~~~
 $(BIN)testdiccionario.out: $(OBJ)testdiccionario.o $(OBJ)diccionario.o
@@ -33,11 +33,18 @@ $(BIN)testdiccionario.out: $(OBJ)testdiccionario.o $(OBJ)diccionario.o
 $(BIN)testletras.out: $(OBJ)testletras.o $(OBJ)letras.o $(OBJ)diccionario.o
 	g++ $^ -o $@
 
-$(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o  $(OBJ)letras.o $(OBJ)diccionario.o
+# $(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o  $(OBJ)letras.o $(OBJ)diccionario.o $(OBJ)combinaciones.o 
+# 	g++ -g $^ -o $@
+
+$(BIN)testbiblioteca.out: $(OBJ)testbiblioteca.o $(OBJ)biblioteca.o  $(OBJ)diccionario.o
 	g++ -g $^ -o $@
 
 $(BIN)testcombinaciones.out: $(OBJ)testcombinaciones.o $(OBJ)combinaciones.o 
 	g++ -g $^ -o $@
+
+$(BIN)testnuevaia.out: $(OBJ)testnuevaia.o $(OBJ)nueva_ia.o $(OBJ)biblioteca.o $(OBJ)combinaciones.o  $(OBJ)diccionario.o $(OBJ)letras.o
+	g++ -g $^ -o $@
+
 
 
 ## ~~~~~~~~ objetos de los test ~~~~~~~~~~
@@ -47,7 +54,10 @@ $(OBJ)testdiccionario.o: $(SRC)testdiccionario.cpp
 $(OBJ)testletras.o: $(SRC)testletras.cpp
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)testia.o: $(SRC)testia.cpp $(OBJ)ia.o
+$(OBJ)testbiblioteca.o: $(SRC)testbiblioteca.cpp 
+	g++ -c $< -o $@ -I$(INCLUDE)
+
+$(OBJ)testnuevaia.o: $(SRC)testnuevaia.cpp $(OBJ)nueva_ia.o
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)testcombinaciones.o: $(SRC)testcombinaciones.cpp $(OBJ)combinaciones.o
@@ -61,11 +71,17 @@ $(OBJ)diccionario.o: $(SRC)diccionario.cpp $(INCLUDE)diccionario.h
 $(OBJ)letras.o: $(SRC)letras.cpp $(INCLUDE)letras.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)ia.o: $(SRC)ia.cpp $(INCLUDE)ia.h
+# $(OBJ)ia.o: $(SRC)ia.cpp $(INCLUDE)ia.h
+# 	g++ -c $< -o $@ -I$(INCLUDE)
+
+$(OBJ)biblioteca.o: $(SRC)biblioteca.cpp $(INCLUDE)biblioteca.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)combinaciones.o: $(SRC)combinaciones.cpp $(INCLUDE)combinaciones.h
 	g++ -c $< -o $@ -I$(INCLUDE)
+
+$(OBJ)nueva_ia.o: $(SRC)nueva_ia.cpp $(INCLUDE)nueva_ia.h
+	g++ -c $< -o $@ -I$(INCLUDE)	
 
 
 ################### utilidades ##################
@@ -78,11 +94,34 @@ clear:
 
 #########    comando para ejecutar test    ##########
 
+testall:
+	@echo "TEST DE PRUEBA DE TODOS LOS MÓDULOS"
+	@echo "Realizado por Blanca Cano Camararo "
+	@echo "Enero de 2019    (con mucho amor)"
+	@echo ""
+
+	@echo "============================================="
+	@echo " 		   test diccionario "
+	@echo "============================================="
+	 $(BIN)testdiccionario.out < $(DATA)diccionario1000.txt
+
+	@echo "============================================="
+	@echo " 		      test letras "
+	@echo "============================================="
+	$(BIN)testletras.out ./data/estadisticas.txt ./data/letras.txt < $(DATA)diccionario1000.txt
+
+	@echo "============================================="
+	@echo " 		    test biblioteca "
+	@echo "============================================="
+	valgrind --leak-check=yes $(BIN)testbiblioteca.out  <  $(DATA)diccionario1000.txt	
+
+
+
 valgrind:
-	valgrind --leak-check=yes $(BIN)testia.out  < $(DATA)diccionario2.txt
+	valgrind --leak-check=yes $(BIN)testcombinaciones.out
 
 testdiccionario:
-	$(BIN)$(MAIN).out < $(DATA)diccionario1000.txt
+	$(BIN)$testdiccionario.out < $(DATA)diccionario1000.txt
 
 testletras:
 	$(BIN)$@.out ./data/estadisticas.txt ./data/letras.txt < $(DATA)diccionario1000.txt
@@ -91,8 +130,13 @@ testia:
 	$(BIN)$@.out <  $(DATA)diccionario1000.txt
 
 testcombinaciones:
+	@echo " ======== Prueba combinaciones con el string 0123 ========"
 	$(BIN)$@.out
 
+testbiblioteca:
+	$(BIN)$@.out <  $(DATA)diccionario1000.txt
 
+testnuevaia:
+	$(BIN)$@.out <  $(DATA)diccionario1000.txt
 
 

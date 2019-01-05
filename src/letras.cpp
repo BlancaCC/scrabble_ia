@@ -218,6 +218,19 @@ string conjuntoLetras::sacaLetras( int num_letras)
   return salida; 
 } //~~~~~ sacaLetras
 
+int conjuntoLetras::puntuacionAsociada( string palabra)
+{
+  int puntuacion = 0;
+
+  for( int i= 0; i< palabra.length(); i++)
+    {
+      puntuacion += letras[ palabra[i] ].puntos; 
+    }
+
+  return puntuacion;
+  
+} //  ~~~~ puntuaciónAsociada 
+
 //################# sobrecarga de operadores  #################
 
 ostream & operator<<( ostream & os, conjuntoLetras & C)
