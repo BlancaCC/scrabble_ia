@@ -75,10 +75,16 @@ vector<string> IA::solucionesLongitud( string letras )
       // si no se ha encontrado se genera la siguiente generación de combinaciones
       // y se guarda si es la última o no en puedeDivirse
       if ( !encontrado )
-	puedeDividirse = C.GeneracionSiguiente(); 
+	puedeDividirse = C.GeneracionSiguiente();
+      else
+	{
+	  soluciones.push_back( "Puntuación obtenida "+to_string(soluciones[0].length() ) ) ; 
+	}
   
     } // WHILE se puedan crear más generaciones o se encuentre
 
+  if ( soluciones.empty() )
+    soluciones.push_back(" ... \n Esto es un poco violento, no he encontrado nada "); 
   return soluciones; 
   
 } //~~~~~~ soluciones por longitud
@@ -152,7 +158,12 @@ vector<string> IA::solucionesPuntos( string letras , conjuntoLetras & cl)
     } //fin del while de buscar por el árbol
 
   // de esta forma el string no se queda vacío y además vemos la puntuación obtenida
-  puntos_soluciones[puntuacion_maxima].push_back("puntuación obtenida: "+to_string(puntuacion_maxima) ); 
+  if( puntuacion_maxima > -1)
+  puntos_soluciones[puntuacion_maxima].push_back("puntuación obtenida: "+to_string(puntuacion_maxima) );
+  else
+    puntos_soluciones[puntuacion_maxima].push_back("No se ha encontrado nada :( ");
+    
+    
 
     return puntos_soluciones[ puntuacion_maxima]; 
   

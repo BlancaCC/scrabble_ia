@@ -17,8 +17,6 @@ Biblioteca::Biblioteca( Diccionario & soluciones, string validas)
   
 } //~~~~~~~~~~ fin constructor 
 
-
-//string Bliblioteca::devuelveSoluciones()
   
 // ################# funciones privadas ##############
 
@@ -42,7 +40,7 @@ void Biblioteca::asignaPrimos( string validas)
   
   while ( indice < primos_necesarios && f_primos >> num_primo)
     {
-      // cout << validas[ indice] << " : " << num_primo << endl;
+      
       primos[ validas[ indice] ] = num_primo; 
       indice++; 
     }

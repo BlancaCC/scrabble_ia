@@ -116,7 +116,20 @@ class conjuntoLetras
 
    */
 
-  conjuntoLetras( string fichero_letras);  
+  conjuntoLetras( string fichero_letras);
+
+  /**
+     @return Devuelve string con las letras válidas 
+   */
+  string letrasValidas() const; 
+
+  /**
+     @brief Muestra por pantalla (caut) las puntuaciones 
+     asociadas a cada letra 
+   */
+
+  void muestraPuntuacion();
+  
   /**
      @brief Dado un diccionario del TDA diccionario, 
 calcula el número de aparicciones de cada una de las letras, 

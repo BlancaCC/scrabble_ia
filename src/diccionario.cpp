@@ -21,13 +21,36 @@ Diccionario::Diccionario()
 }
 
 
-Diccionario::Diccionario( string palabra)
+/**Diccionario::Diccionario( string palabra)
 {
   set<string> datos;
   agregarPalabra( palabra); 
 }
+*/
+Diccionario::Diccionario( string nombre_fichero)
+{
+  set<string> datos;
 
+  ifstream fichero (nombre_fichero);
 
+  // combrobamos que se ha abierto correctamente
+  // en caso negativo mensaje de error y abortamos el programa
+  if( ! fichero.is_open() )
+    {
+      cout << "No se ha podido abrir el fichero con las palabras" << endl;
+      assert( fichero); 
+    }
+
+  string palabra;
+  while ( fichero  >> palabra )
+    {
+      agregarPalabra( palabra); 
+    }
+  //para que no falte por añadir la última palabra
+  agregarPalabra( palabra); 
+  fichero.close(); 
+  
+}  // ~~~ constructor a partir de fichero con palabras 
  
 
 
@@ -101,17 +124,6 @@ istream & operator >> (istream & is, Diccionario & D)
 
 //~~~~~~~~~~~~~~~~~ iteradores de diccionario  ~~~~~~~~~~~~~~~~~~~~~~~
 
-/**
-set<string>::iterator Diccionario::begin()
-{
-  return datos.begin();
-}
-
-set<string>::iterator Diccionario::end()
-{
-  return datos.end();
-}
-*/
 set<string>::const_iterator Diccionario::cbegin() const
 {
   return datos.cbegin();

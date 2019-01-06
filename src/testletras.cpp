@@ -66,5 +66,11 @@ int main( int argc , char* argv [])
 	   << endl; 
     }
 
+  // prueba de letras válidas
+  cout << "Las letras válidad leídas son " << C2.letrasValidas() << endl;
+
+  // putnucacin
+  cout << " su puntuación asociada es " << endl; 
+  C2.muestraPuntuacion(); 
   
 }

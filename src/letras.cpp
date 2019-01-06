@@ -101,6 +101,11 @@ conjuntoLetras::conjuntoLetras( string fichero_letras)
   cargado_de_diccionario = false; 
 } //~~~~~ constructor a partir de fichero
 
+string conjuntoLetras::letrasValidas() const
+{
+  return validas; 
+} //~~~ letrasValidas
+
 //se ha omitido el const 
 void conjuntoLetras::generaFicheroEstadistica( string fsalida) 
 {
@@ -248,6 +253,23 @@ int conjuntoLetras::puntuacionAsociada( const multiset<char>  & palabra)
   return puntuacion;
   
 } //  ~~~~ puntuaciónAsociada, versión multiset
+
+
+void conjuntoLetras::muestraPuntuacion() 
+{
+  //procedemos a mostrar en pantalla los resultados 
+  cout  << right << setw(7)   << "Letra"
+	<< right << setw( 15) << "Puntuación"
+	<< endl;
+
+  for( auto c = validas.cbegin(); c != validas.cend(); c++)
+    {
+      cout << right << setw(7)<< *c
+	   << right << setw( 15) << letras[*c].puntos
+	   << endl; 
+    }
+  
+}// ~~~~ muestra puntuación
 
 //################# sobrecarga de operadores  #################
 

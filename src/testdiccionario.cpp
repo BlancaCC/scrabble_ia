@@ -12,10 +12,11 @@
 #include "diccionario.h"
 using namespace std; 
 
-int main()
+int main(int argc, char * argv[])
 {
   //construcctor por defecto
-  Diccionario D("amarillo");
+  Diccionario D;
+  
 
   //añadir palabra al diccionario
   D.agregarPalabra( "tomate");
@@ -60,6 +61,10 @@ int main()
  // salida
 
   cout << " El diccionario cargado es:\n" << D;
-  
+
+  // constructor a partir de argumentos
+  Diccionario D2 (argv[1] ); 
+
+  cout << " El diccionario cargado por argumentos es \n" << D2; 
   
 }

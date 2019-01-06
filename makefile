@@ -24,7 +24,12 @@ DATA=./data/
 BIN=./bin/
 SRC=./src/
 
-all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testbiblioteca.out  $(BIN)testcombinaciones.out $  $(BIN)testia.out
+all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testbiblioteca.out  $(BIN)testcombinaciones.out $  $(BIN)testia.out $(BIN)juego.out
+
+##~~~~~~ binario del juego ~~~~~~~~~~
+$(BIN)juego.out: $(OBJ)juego.o $(OBJ)ia.o $(OBJ)biblioteca.o $(OBJ)combinaciones.o  $(OBJ)diccionario.o $(OBJ)letras.o
+	g++ $^ -o $@
+
 
 ## ~~~~~~~~~~ binarios de los test ~~~~~~~~~~
 $(BIN)testdiccionario.out: $(OBJ)testdiccionario.o $(OBJ)diccionario.o
@@ -43,7 +48,9 @@ $(BIN)testcombinaciones.out: $(OBJ)testcombinaciones.o $(OBJ)combinaciones.o
 $(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o $(OBJ)biblioteca.o $(OBJ)combinaciones.o  $(OBJ)diccionario.o $(OBJ)letras.o
 	g++ -g $^ -o $@
 
-
+## ~~~~~~~~~~~~~~ objetos del juego ~~~~~~~
+$(OBJ)juego.o: $(SRC)juego.cpp
+	g++ -c $< -o $@ -I$(INCLUDE)
 
 ## ~~~~~~~~ objetos de los test ~~~~~~~~~~
 $(OBJ)testdiccionario.o: $(SRC)testdiccionario.cpp  $(OBJ)diccionario.o
@@ -115,8 +122,18 @@ testall:
 valgrind:
 	valgrind --leak-check=yes $(BIN)testcombinaciones.out
 
+#################### JUEGO ##################
+juego_longitud:
+	$(BIN)juego.out $(DATA)diccionario1.txt $(DATA)letras.txt 8 L
+
+juego_puntos:
+	$(BIN)juego.out $(DATA)diccionario1.txt $(DATA)letras.txt 8 P
+
+######################################################
+
+### ~~~~~~~~ test ~~~~~~~~~~~
 testdiccionario:
-	$(BIN)$testdiccionario.out < $(DATA)diccionario1000.txt
+	$(BIN)$@.out $(DATA)diccionario1.txt < $(DATA)diccionario1.txt
 
 testletras:
 	$(BIN)$@.out ./data/estadisticas.txt ./data/letras.txt < $(DATA)diccionario1000.txt

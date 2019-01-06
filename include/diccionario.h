@@ -14,6 +14,8 @@ using namespace std;
 #include <vector>
 #include <string>
 
+#include <assert.h>
+#include <fstream>
 
 class Diccionario
 {
@@ -38,8 +40,16 @@ class Diccionario
   /**
      @brief Constructor a partir de una palabra  
      @param Palabra con la que commentzar el diccionario 
-   */
+   
   Diccionario(string palabra ); 
+  */
+  
+  /**
+     @brief construcctori del diccionario a partir de un fichero de palabras
+     @param Nombre del fichero
+     
+   */
+  Diccionario( string nombre_fichero ); 
   
   /**
      @brief Devuelbe el número de palabras del diccionario
