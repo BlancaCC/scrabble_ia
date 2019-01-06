@@ -5,87 +5,81 @@
    @date enero de 2019
  */
 
-
 #ifndef _IA_H_
 #define _IA_H_
 
 #include<iostream>
-#include <vector>
-#include <string>
-#include <map>
-
+#include "combinaciones.h"
+#include "biblioteca.h"
 #include "diccionario.h"
-//#include "combinaciones.h"
+#include "letras.h"
 
-#include <fstream>
-#include <assert.h>
+#include <map> 
 
 using namespace std; 
 
-/**
-   @brief TDA IA Jugador del scrabble
 
- */
-//class IA
-Struct Biblioteca 
+class IA
 {
-  //private:
- public: 
-  // ~~~~~~~~~~~~ variables y métodos de carga ~~~~~~~~~~~
-  map< char, int> primos;
-  map< unsigned  long int, vector<string> > traduccion_diccionario;
+ private:
+
+  
+  Biblioteca conocimiento;  /// Creación de la trabla hash
+  /**
+     @ brief modo de juego 
+     Indicado por variable booleana:
+         *- false : busca las palabras más largas
+	 *- true  : busca las palabras de mayor longitud 
+   */
+  bool modo_puntuacion;      /// Modo de juego, si es puntos 
+
+
+  // ~~~~~~~~~ métodos búsqueda mejor solución 
+  /**
+     @brief Soluciones por longitud
+     @param letras: total de letras que se puede combinar
+     @return vector con soluciones
+   */
+  vector<string> solucionesLongitud( string letras);
 
   /**
-     @brief A cada caracter válido le asocia un número primo diferente
+     @brief Solucioens por puntuación
+     @param letras: total de letras que se puede combinar
+     @return vector con soluciones
    */
-  void asignaPrimos(string validas);
+  vector<string> solucionesPuntos( string letras, conjuntoLetras & cl); 
+  
 
-  /**
-     @brief traduce las palabras de un diccionario a un primo, 
-     Crea map donde a cada uno de los anteriores primos le asocia una palabra :D
-   */
-  void traduceDiccionario( Diccionario & soluciones);
-
-  /**
-     @brief Devuelve el primo asociado a una combinación 
-     @param validad combinacio de letras 
-
-   */
-  unsigned long int traduce( string validas); 
-
- 
  public:
 
   /**
-     @brief constructor de la IA
-     @param dicccionario, vocabulario del que dispondrá nuestra IA
-     @param letras válidas 
+     @brief Constructor de la IA
+     @param Diccionario de referencia con el que jugar
+     @param Modo de juego con el que jugar 
    */
-  Biblioteca( Diccionario & soluciones, string validas = "abcdefghijklmnopqrstuvwxyz" );
+  //El diccionario se podría poner constante CReO
+  IA ( Diccionario & D, bool modo_puntos, string validas = "abcdefghijklmnopqrstuvwxyz");
 
   /**
-     @brief Devuelve las soluciones
-     OJO IMPORTANTE QU ECOMBINCACIONES SEA UNA CLASE AMIGA
-     @param String de caracteres con el que hacer las combincaioens
-     @return Devuelve un vector de string con todas las soluciones
-  */
-  //vector<string> devuelveSoluciones( string letras); 
+     @brief devuelve las mejores soluciones 
+     @param letras con las que jugar 
+     @param conuntoLetras utilizada para consultas puntuaciones
+     @return mejores soluciones encontradas 
+     ( si el vector está vacío significa que no ha encontrado ninguna solución)
+   */
 
-    /**
-     @brief analiza la siguiente generación
-     @param resultado, vector con soluciones
-     @param validos, diccionario con comprobaciones
-     @return Devuelve true si ha encontrado alguna solución,
-     false en su defecto 
-     NOTA: DEBE DECLARARSE AMIGA, PORQUE SI NO NO HAY MANERA CON EL ENLAZADO
-   
-  bool analisisGeneracion( vector<string> & resultados, auto & ia );
-  */
-  // friend bool analisisGeneracion( vector<string> & resultado , IA & ia, Combinaciones C);
+  vector<string> mejorSolucion( string letras, conjuntoLetras & cl);   
 
-    
+
+  /**
+     @return Devuelve true si se encuentra en modo puntuación,
+     false en el contrario 
+  */
+  bool modoPuntuacion() const;
+
+  
 };
 
 
-
 #endif //_IA_H
+

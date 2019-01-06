@@ -1,59 +1,67 @@
 /**
-   @brief Implementación del TDA combinaciones
+   @brief Implementación del TDA combinaciones, 
+esta estructura se encuentra definida en combinaciones.h
+   @file combinacion.cpp 
    @author Blanca Cano Camarero 
    @date Enero 2019
  */
 
 #include "combinaciones.h"
 
-Elemento::Elemento( string l, int i, int f)
-{
-  letras = l;
-  inicio_generacion = i;
-  fin_generacion = f;
-}
- 
-
 Combinaciones::Combinaciones( string elementos)
 {
-  arbol_combinaciones.push_back( Elemento(elementos) ); 
-}
+  multiset<char> aux;
+  for( auto c = elementos.cbegin();  c != elementos.cend(); c++)
+    aux.insert( *c );
 
-// ¡ CON ESTE ALGORITMO SE PRODUCEN REPETICIONES! 
+  set< multiset<char> > aux2;
+  aux2.insert( aux);
+  
+  arbol_combinaciones.push_back( aux2 );
+  
+} // ~~~ fin combinaciones 
+
+
+
+// ¡ CON ESTE ALGORITMO SE PRODUCEN REPETICIONES!
 bool Combinaciones::GeneracionSiguiente()
 {
-  //leemos último elemento y obtenemos posición de los elementos de la generación que vamos a expandir
- 
-  int inicio = ( arbol_combinaciones.back() ).inicio_generacion;
-  int fin = ( arbol_combinaciones.back() ).fin_generacion;
-
-
-  ///< tomamos longitud mínima de la descendencia de 2, ya que no consideramos palabras a simpletes de letras
-  int longitud = arbol_combinaciones[inicio].letras.length() ;
+  // tomamos longitud mínima de la descendencia de 2, ya que no consideramos palabras a simpletes de letras
+  // para ello leemos el primer string del último conjunto del vector
+  //que se corresponde a la última generaciín creada
+  
+  int longitud = (* (arbol_combinaciones.back()).begin() ).size();
   if ( longitud > 2)
     {
-      set<string> descendientes; ///< Utilizaremos set para evitar repeticiones, ( ejemplo ABBA )
-      for( int padre = inicio ; padre < fin; padre++)
-	{
-	  // letra_quitar= padre-inicio
-	  for( int letra_quitar= 0; letra_quitar< longitud ; letra_quitar++)
-	    {
-	      string nuevo_elemento = arbol_combinaciones[padre].letras; 
-	      ///< Eliminamos la letra correspondiente
-	      nuevo_elemento.erase( letra_quitar , 1);
-	      descendientes.insert( nuevo_elemento);
-	      //cout << nuevo_elemento << endl; 
-	    }
-
-	}
-      // procedemos a añadirlos a arbolCombinaciones
-      int pos_final = fin +  descendientes.size();
-      ///< la posicion de inicio coincide con la de fin de sus padres
+      set< multiset<char> > descendientes;
+      /// Utilizaremos set para evitar repeticiones, ( ejemplo ABBA )
+      //recorremos cada combinación del conjunto
       
-      for( auto cit = descendientes.cbegin(); cit != descendientes.cend(); cit++ )
+      for( auto padre = arbol_combinaciones.back().cbegin() ; padre !=  arbol_combinaciones.back().cend(); padre++  )
 	{
-	  arbol_combinaciones.push_back( Elemento( (*cit) , fin, pos_final) );
-	}
+	  // de cada combinación exploramos las siguientes
+	  for( auto letra_quitar= padre->begin(); letra_quitar !=  padre->end() ; letra_quitar++)
+	    {
+
+	      
+	      //formamos nueva combinación obviando una letra
+	      multiset< char> nuevo_elemento = *padre;
+	      //se hace con un find y no con un erase *letra_quitar porque de la segunda forma borraría toda las incidencias
+	      //como suponemos que no se repetiran muchas letras no tiene porqué ser un defecto muy grande en la eficiencia
+	      nuevo_elemento.erase( nuevo_elemento.find(*letra_quitar)) ; 
+	      
+
+	      descendientes.insert( nuevo_elemento); 
+	      //cout << nuevo_elemento << endl;
+	      
+	    } // FIN for combinaciones letras
+	  
+	} // FIN for cada uno de las combinaciones padre
+
+      //insertamos el nuevo conjunto al final
+      arbol_combinaciones.push_back( descendientes);
+
+      //devolvemos true en señal de que ha sido creaod con éxito 
       return true; 
     }
 
@@ -62,61 +70,3 @@ bool Combinaciones::GeneracionSiguiente()
 } //~~~~~~ fin generación siguiente 
 
 
-vector<string> Combinaciones::UltimaGeneracion() const
-{
-
-  vector<string> generacion;
-  
-  int inicio = ( arbol_combinaciones.back() ).inicio_generacion;
-  int fin = ( arbol_combinaciones.back() ).fin_generacion;
-
-  for( int i=inicio; i< fin ; i++)
-    {
-      generacion.push_back( arbol_combinaciones[i].letras);
-    }
-  return generacion; 
-  
-} // ~~~~~~ ultimaGeneración
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-bool analisisGeneracion( vector<string> & resultado , IA & ia, Combinaciones C)
-{
-  
-  int inicio = C.( arbol_combinaciones.back() ).inicio_generacion;
-  int fin = C.( arbol_combinaciones.back() ).fin_generacion;
-
-  bool encontrado = false;
-  
-  for( int combinacion = inicio; combinacion < fin ; combinacion++)
-    {
-      unsigned long int llave = ia.traduce( C.arbol_combinaciones[ combinacion].letras);
-      // comprobamos si está en el diccionario
-      if ( ia.traduccion_diccionario.count(llave) )
-	{
-	  vector<string> incidencia = ia.traduccion_diccionario[llave];
-	  encontrado = true; 
-
-	  ///hacer con un set y luego traducir para evitar repeticiones de soluciones 
-	  resultado.insert(resultado.begin(), incidencia.begin(), incidencia.end() ); 
-	  cout << c.arbol_combinaciones[ combinacion].letras
-	       << " Se encuentra" << endl; 
-	}
-      
-    }
-  return encontrado; 
-} //~~~~~~ analisisGeneracion
-
-*/

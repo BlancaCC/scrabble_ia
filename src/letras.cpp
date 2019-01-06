@@ -218,6 +218,7 @@ string conjuntoLetras::sacaLetras( int num_letras)
   return salida; 
 } //~~~~~ sacaLetras
 
+
 int conjuntoLetras::puntuacionAsociada( string palabra)
 {
   int puntuacion = 0;
@@ -229,7 +230,21 @@ int conjuntoLetras::puntuacionAsociada( string palabra)
 
   return puntuacion;
   
-} //  ~~~~ puntuaciónAsociada 
+} //  ~~~~ puntuaciónAsociada
+
+
+int conjuntoLetras::puntuacionAsociada( const multiset<char>  & palabra)
+{
+  int puntuacion = 0;
+
+  for( auto i=palabra.cbegin(); i != palabra.cend(); i++)
+    {
+      puntuacion += letras[ *i ].puntos; 
+    }
+
+  return puntuacion;
+  
+} //  ~~~~ puntuaciónAsociada, versión multiset
 
 //################# sobrecarga de operadores  #################
 

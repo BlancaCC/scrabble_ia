@@ -17,6 +17,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <set>
 
 #include <math.h> //trunc
 
@@ -154,7 +155,15 @@ y en fúnción de su cantidad
      @return entero con la puntuacion 
    */
 
-  int puntuacionAsociada( string palabra); 
+  int puntuacionAsociada( string palabra);
+
+    /**
+     @brief Devuelve la puntuación de una palabra dada
+     @param palabra
+     @return entero con la puntuacion 
+   */
+
+  int puntuacionAsociada( const multiset<char> & palabra); 
     
   ///###################### funciones amigas ################
   /**

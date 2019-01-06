@@ -97,6 +97,18 @@ unsigned long int Biblioteca::traduce ( string validas)
 } // traudce 
 
 
+///< OJO para mejorar la eficiencia algo no se comprueba que el caracter esté registrado en el diccionario de los primos 
+unsigned long int Biblioteca::traduce ( multiset<char> validas)
+{
+  
+  unsigned long int indice = 1; 
+  for( auto c = validas.cbegin(); c != validas.cend(); c++ )
+    indice *= primos[*c ];
+
+  return indice; 
+} // traudce 
+
+
 Biblioteca & Biblioteca::operator=( const Biblioteca  & B) 
 {
   primos = B.primos;

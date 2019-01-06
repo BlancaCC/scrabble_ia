@@ -1,5 +1,5 @@
 /**
-   @brief programa de prueba de combinaciones 
+   @brief programa de prueba de combinaciones.h combinaciones.cpp
    @author Blanca Cano Camarero 
    @date Enero 2019
  */
@@ -16,11 +16,13 @@ using namespace std;
  */
 void muestraGeneracion( const Combinaciones & C)
 {
-  vector<string> generacion=  C.UltimaGeneracion();
-
-  for( int i=0 ; i< generacion.size(); i++)
+  for( auto  conjunto  = (C.arbol_combinaciones.back()).cbegin();
+       conjunto  != (C.arbol_combinaciones.back()).cend();
+       conjunto++ )
     {
-      cout << generacion[i] << " " ; 
+      for( auto c = conjunto->cbegin(); c != conjunto->cend(); c++)
+	cout << (*c) ;
+      cout << "  "; 
     }
   cout << endl; 
 }

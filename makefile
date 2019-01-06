@@ -24,7 +24,7 @@ DATA=./data/
 BIN=./bin/
 SRC=./src/
 
-all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testbiblioteca.out  $(BIN)testcombinaciones.out $(BIN)testnuevaia.out  #$(BIN)testia.out
+all:  $(BIN)testdiccionario.out $(BIN)testletras.out $(BIN)testbiblioteca.out  $(BIN)testcombinaciones.out $  $(BIN)testia.out
 
 ## ~~~~~~~~~~ binarios de los test ~~~~~~~~~~
 $(BIN)testdiccionario.out: $(OBJ)testdiccionario.o $(OBJ)diccionario.o
@@ -42,7 +42,7 @@ $(BIN)testbiblioteca.out: $(OBJ)testbiblioteca.o $(OBJ)biblioteca.o  $(OBJ)dicci
 $(BIN)testcombinaciones.out: $(OBJ)testcombinaciones.o $(OBJ)combinaciones.o 
 	g++ -g $^ -o $@
 
-$(BIN)testnuevaia.out: $(OBJ)testnuevaia.o $(OBJ)nueva_ia.o $(OBJ)biblioteca.o $(OBJ)combinaciones.o  $(OBJ)diccionario.o $(OBJ)letras.o
+$(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o $(OBJ)biblioteca.o $(OBJ)combinaciones.o  $(OBJ)diccionario.o $(OBJ)letras.o
 	g++ -g $^ -o $@
 
 
@@ -57,7 +57,7 @@ $(OBJ)testletras.o: $(SRC)testletras.cpp
 $(OBJ)testbiblioteca.o: $(SRC)testbiblioteca.cpp 
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)testnuevaia.o: $(SRC)testnuevaia.cpp $(OBJ)nueva_ia.o
+$(OBJ)testia.o: $(SRC)testia.cpp $(OBJ)ia.o
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)testcombinaciones.o: $(SRC)testcombinaciones.cpp $(OBJ)combinaciones.o
@@ -71,16 +71,13 @@ $(OBJ)diccionario.o: $(SRC)diccionario.cpp $(INCLUDE)diccionario.h
 $(OBJ)letras.o: $(SRC)letras.cpp $(INCLUDE)letras.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-# $(OBJ)ia.o: $(SRC)ia.cpp $(INCLUDE)ia.h
-# 	g++ -c $< -o $@ -I$(INCLUDE)
-
 $(OBJ)biblioteca.o: $(SRC)biblioteca.cpp $(INCLUDE)biblioteca.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)combinaciones.o: $(SRC)combinaciones.cpp $(INCLUDE)combinaciones.h
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)nueva_ia.o: $(SRC)nueva_ia.cpp $(INCLUDE)nueva_ia.h
+$(OBJ)ia.o: $(SRC)ia.cpp $(INCLUDE)ia.h
 	g++ -c $< -o $@ -I$(INCLUDE)	
 
 
@@ -126,17 +123,14 @@ testdiccionario:
 testletras:
 	$(BIN)$@.out ./data/estadisticas.txt ./data/letras.txt < $(DATA)diccionario1000.txt
 
-testia:
-	$(BIN)$@.out <  $(DATA)diccionario1000.txt
 
 testcombinaciones:
-	@echo " ======== Prueba combinaciones con el string 0123 ========"
 	$(BIN)$@.out
 
 testbiblioteca:
 	$(BIN)$@.out <  $(DATA)diccionario1000.txt
 
-testnuevaia:
+testia:
 	$(BIN)$@.out <  $(DATA)diccionario1000.txt
 
 

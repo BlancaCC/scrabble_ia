@@ -14,6 +14,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 
 #include "diccionario.h"
 
@@ -57,7 +58,15 @@ class  Biblioteca
      @param validad combinacio de letras 
 
    */
-  unsigned long int traduce( string validas); 
+  unsigned long int traduce( string validas);
+
+
+   /**
+     @brief Devuelve el primo asociado a una combinación 
+     @param validad combinacio de letras 
+
+   */
+  unsigned long int traduce( multiset<char> validas); 
 
  
  public:

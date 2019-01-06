@@ -1,146 +1,152 @@
 /**
    @file ia.cpp 
    @author Blanca Cano Camarero 
-   @brief Implementación de inteligencia artificial para jugar al scrabble 
+   @brief Implementación de inteligencia artificial para jugar al scrabble, su cabecera es el archivo "ia.h"
    @date enero de 2019
  */
 
-
 #include "ia.h"
 
-//string por defecto "abcdefghijklmnopqrstuwxyz"
-IA:: IA( Diccionario & soluciones, string validas)
+IA::IA(  Diccionario & D, bool modo_puntos , string validas)
 {
+  conocimiento = Biblioteca( D , validas); 
+  modo_puntuacion = modo_puntos;
   
-  asignaPrimos(validas);
-  traduceDiccionario(soluciones);
-  
-} //~~~~~~~~~~ fin constructor 
+} //~~~~~ fin del constructor 
 
 
-//string IA::devuelveSoluciones()
-  
-// ################# funciones privadas ##############
-
-void IA::asignaPrimos( string validas)
+bool IA::modoPuntuacion() const
 {
-  const string fichero_primos = "./data/primos"; 
-  int primos_necesarios = validas.length();
-
-  //abrimos con capacidad de lectura y escritura
-  ifstream f_primos (fichero_primos);
-  
-  
-  if(! f_primos.is_open() )
-    {
-      cout << "No se ha podido abrir el archivo con los primos " << endl; 
-      assert(f_primos);
-    }
-  
-  int indice = 0;
-  int num_primo;
-  
-  while ( indice < primos_necesarios && f_primos >> num_primo)
-    {
-      // cout << validas[ indice] << " : " << num_primo << endl;
-      primos[ validas[ indice] ] = num_primo; 
-      indice++; 
-    }
-  
-  //si el fichero contiene menos primos de los necersarios,
-  // procedo a calcularlos y añadirlos al fichero
-  f_primos.close();
-  
-  ofstream out_primos ( fichero_primos, ios::app);
-  while( indice < primos_necesarios)
-    {
-      num_primo+= 2; 
-      bool es_primo = true;
-      for( int i = 0; es_primo && i < indice ; i++)
-	{
-	  if (num_primo % primos[ validas[i] ] == 0)
-	    es_primo = false;
-	}
-      if( es_primo)
-	{
-	  //cout << validas[ indice] << " : " << num_primo<< " (ha sido primo de repesca)"<< endl;
-	   primos[ validas[ indice] ] = num_primo; 
-	   indice++;
-	   out_primos << num_primo << endl; 
-	}
-    }
-    out_primos.close(); 
-} //~~~~~~~ fin asigna primos
+  return modo_puntuacion; 
+} //~~~~~ fin modo puntuación 
 
 
-void IA::traduceDiccionario( Diccionario & soluciones)
+
+vector<string> IA::mejorSolucion( string letras, conjuntoLetras & cl )
 {
-  for( auto cit = soluciones.cbegin(); cit != soluciones.cend(); cit++)
-    {
-      ///< calculamos la entrada de la tabla hash correspondiente
-      ///< resultado de multiplicar cada caracter por su primo asociado
-      string palabra = (*cit); 
-     
-     unsigned long long int entrada = 1;
-      for( int i= 0; i< palabra.length(); i++)
-	{
+  return ( modo_puntuacion ) ?
+    solucionesLongitud( letras):// solucionesPuntos( letras, cl) :
+    solucionesLongitud( letras); 
+} // ~~~~~~~~ mejor solucion general 
 
-	  if ( primos.find((*cit)[i] ) != primos.end() )
-	    entrada *= primos[ (*cit)[i] ];
-	  else
-	    {
-	      entrada = 0;
-	      cout << "No se ha enconctrado " << (*cit)[i] << endl;
-	      break; 
-	    }
-	}
-      // cout << "Se está leyendo "  << palabra << " código en tabla hash    " << entrada << endl; 
-      
-      traduccion_diccionario[ entrada ].push_back( (*cit));
-    }
-}  //~~~~~~~ traduceDiccionario 
 
-unsigned long int IA::traduce ( string validas)
+//#### MÉTODOS DE BÚSQUEDA PARTICULARES  ########
+
+vector<string> IA::solucionesLongitud( string letras )
 {
+
+  /*
+    Lo interesante que permite Combinaciones es que en longitud, 
+    los "padres" del árbol van a tener estrictamente mayor puntuación.
+    Por tanto, en cuanto encontremos en una "generación" una solución,
+    sabremos que esa y sus hermanas serán las mejores soluciones
+    y no hará falta seguir generando y explorando el árbol. 
+   */
   
-  unsigned long int indice = 1; 
-  for( int i=0; i< validas.length(); i++)
-    indice *= primos[ validas[i] ];
-
-  return indice; 
-} // traudce 
-
-
-// ########## miembros públicos ############
-
-vector<string> IA::devuelveSoluciones( string letras)
-{
-  Combinaciones C (letras);
+  Combinaciones C(letras);
   vector<string> soluciones;
-  bool encontrado = false;
 
+  bool puedeDividirse =  true;
+  bool encontrado = false;
   
-  unsigned long int llave = traduce(letras); 
-  //si se encuentra tal solucion en el diccionario 
-  if(  traduccion_diccionario.count( llave ))
+  while (!encontrado &&  puedeDividirse )
     {
-      return traduccion_diccionario[llave]; 
-    }
-  if( C.GeneracionSiguiente() && !encontrado  )
-    {
-      encontrado = analisisGeneracion( soluciones, (*this), C  ); 
-    }
-    return vector<string>(); 
-} //~~~~~~ devuelveSoluciones
+      set<multiset <char>> candidatos = C.arbol_combinaciones.back(); 
+      for( auto candidato = candidatos.cbegin();
+	   candidato != candidatos.cend(); candidato++ )
+	{
+	  //traducimo las letras actuales a la clave que tendría si estuviera en las posibles soluciones traduccion_diccionario 
+	  unsigned long int codigo_primo = conocimiento.traduce( (*candidato) );
+	  //comprobamos si se encuentra en las soluciones
+	  if( conocimiento.traduccion_diccionario.count( codigo_primo))
+	    {
+	      vector<string> nuevas_soluciones  = conocimiento.traduccion_diccionario[codigo_primo];
+
+	      //añadimos las nuevas soluciones al final del  vector de soluciones a devolver
+	      soluciones.insert( soluciones.end(),
+				 nuevas_soluciones.begin(),
+				 nuevas_soluciones.end());
+	      encontrado = true; 
+	    } 
+	} // for candidatos
+
+      // si no se ha encontrado se genera la siguiente generación de combinaciones
+      // y se guarda si es la última o no en puedeDivirse
+      if ( !encontrado )
+	puedeDividirse = C.GeneracionSiguiente(); 
+  
+    } // WHILE se puedan crear más generaciones o se encuentre
+
+  return soluciones; 
+  
+} //~~~~~~ soluciones por longitud
 
 /*
-  Util a la hora de implementar 
+vector<string> solucionesPuntos( string letras , conjuntoLetras & cl)
+{
+  /*
+    Aquí no podemos aplicar la idea de soluccionesLongitud,
+    si embargo podemos podar el árbol de la siguiente manera:
 
- C.analisisGeneracion(nulo);
+    Cuando se haya producciodo un encuentro de una solución está tendrá una puntuación asociada, 
+    se eliminarán de la lista de candidatos a seguir explorando, los que potencialmente tengan  una puntuación menor
+    
+    Cuando se produzca una combinación con solución,
+    almacenaremos la incidencia en un diccionario cuya clave es su puntuación
+    Finalmemnte devolveremos la estructura con mayor puntuación. 
+   */
+/* 
+  map < int, vector<string> > puntos_soluciones;
+  int puntuacion_maxima = -1; //suponemos que la puntuación no puede ser negativa
 
-  while( C.GeneracionSiguiente())
+  Combinaciones C(letras);
+
+  bool seguirExplorando = true;
+
+  while ( seguirExplorando )
     {
-      cout << "=========== otra generación ===========" << endl; 
-      C.analisisGeneracion(nulo);
-    }
- */
+      set< multiset<char> > candidatos = C.arbol_combinaciones.back();
+
+      //recorremos los multiset
+      for( auto candidato = candidatos.cbegin();
+	   candidato != candidatos.cend(); candidato++ )
+	{
+	  // si el candidato es potencialmente de puntuación menor, directamente lo eliminamos
+	  int nueva_puntuacion = cl.puntuacionAsociada(*candidato); 
+	  if ( nueva_puntuacion < puntuacion_maxima)
+	    {
+	      //elimina dicho candidato, ya que por más que profundicemos no vamos a llegar a una puntuación mayor
+	      (C.arbol_combinaciones.back() ).erase( *candidato );
+	    }
+	  else
+	    {
+	    
+	      //traducimo las letras actuales a la clave que tendría si estuviera en las posibles soluciones traduccion_diccionario
+	      unsigned long int codigo_primo = conocimiento.traduce( (*candidato) );
+	  
+	      //comprobamos si se encuentra en las soluciones
+	      if( conocimiento.traduccion_diccionario.count( codigo_primo))
+		{
+		  //actualizamos puntuacion_maxima
+		  puntuacion_maxima = nueva_puntuacion; 
+	      
+		  vector<string> nuevas_soluciones  = conocimiento.traduccion_diccionario[codigo_primo];
+
+		  //añadimos las nuevas soluciones al final del  vector de soluciones a devolver
+		  puntos_soluciones[puntuacion_maxima].insert(puntos_soluciones[puntuacion_maxima].end(),
+							      nuevas_soluciones.begin(),
+							      nuevas_soluciones.end()); 
+		  
+		}  
+	    } // else potencial de puncuación mayor
+	  
+	  seguirExplorando = C.GeneracionSiguiente();
+	   
+	} // fin for candidato
+    } //fin del while de buscar por el árbol
+  
+  vector <string> vacio; 
+  return (puntuacion_maxima > -1)?  puntos_soluciones[ puntuacion_maxima] : vacio; 
+  
+} // ~~~~~~ soluciones por puntos 
+*/
