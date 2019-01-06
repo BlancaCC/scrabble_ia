@@ -13,7 +13,7 @@
 using namespace std;
 
 
-void muestraSoluciones( IA ia, string letras, conjuntoLetras & cl)
+void muestraSoluciones( IA ia, conjuntoLetras & cl,  string letras)
 {
   vector<string > soluciones = ia.mejorSolucion(letras, cl);
 
@@ -30,19 +30,29 @@ void muestraSoluciones( IA ia, string letras, conjuntoLetras & cl)
 
 int main()
 {
+  
   Diccionario D;
   cin >> D;
+  
+  conjuntoLetras cl( "./data/letras.txt");
 
-  ///< Prueba del constructor
+  /// Prueba del constructor
   bool modo_puntos = false; 
-  IA ia( D, modo_puntos);
-  
-  conjuntoLetras cl;
-  cl.analizarDiccionario(D);
-  
-  muestraSoluciones( ia, "cola" , cl );
-  muestraSoluciones( ia, "yaxohnswe" , cl);
-  muestraSoluciones( ia, "cadamentealambi" , cl);
+  IA ia_l( D, modo_puntos);
+
+
+  /// Buscamos soluciones por longitud
+  muestraSoluciones( ia_l, cl, "cola");
+  muestraSoluciones( ia_l, cl, "yaxohnswe" );
+  muestraSoluciones( ia_l, cl, "cadamentealambi");
+
+  modo_puntos = true;  
+  IA ia_p( D, modo_puntos);
+ 
+  /// Buscamos soluciones por puntos
+  muestraSoluciones( ia_p, cl, "cola");
+  muestraSoluciones( ia_p, cl, "yaxohnswe" );
+  muestraSoluciones( ia_p, cl, "cadamentealambi");
 
   
   cout << " --  Fin de la prueba IA, todo correcto (o eso parece) -- " << endl; 

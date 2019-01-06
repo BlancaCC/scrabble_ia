@@ -24,9 +24,11 @@ bool IA::modoPuntuacion() const
 
 vector<string> IA::mejorSolucion( string letras, conjuntoLetras & cl )
 {
+ 
   return ( modo_puntuacion ) ?
-    solucionesLongitud( letras):// solucionesPuntos( letras, cl) :
+    solucionesPuntos( letras, cl):
     solucionesLongitud( letras); 
+  
 } // ~~~~~~~~ mejor solucion general 
 
 
@@ -81,8 +83,8 @@ vector<string> IA::solucionesLongitud( string letras )
   
 } //~~~~~~ soluciones por longitud
 
-/*
-vector<string> solucionesPuntos( string letras , conjuntoLetras & cl)
+
+vector<string> IA::solucionesPuntos( string letras , conjuntoLetras & cl)
 {
   /*
     Aquí no podemos aplicar la idea de soluccionesLongitud,
@@ -95,7 +97,7 @@ vector<string> solucionesPuntos( string letras , conjuntoLetras & cl)
     almacenaremos la incidencia en un diccionario cuya clave es su puntuación
     Finalmemnte devolveremos la estructura con mayor puntuación. 
    */
-/* 
+ 
   map < int, vector<string> > puntos_soluciones;
   int puntuacion_maxima = -1; //suponemos que la puntuación no puede ser negativa
 
@@ -111,8 +113,11 @@ vector<string> solucionesPuntos( string letras , conjuntoLetras & cl)
       for( auto candidato = candidatos.cbegin();
 	   candidato != candidatos.cend(); candidato++ )
 	{
+
 	  // si el candidato es potencialmente de puntuación menor, directamente lo eliminamos
-	  int nueva_puntuacion = cl.puntuacionAsociada(*candidato); 
+	  int nueva_puntuacion = cl.puntuacionAsociada(*candidato);
+
+	  
 	  if ( nueva_puntuacion < puntuacion_maxima)
 	    {
 	      //elimina dicho candidato, ya que por más que profundicemos no vamos a llegar a una puntuación mayor
@@ -122,31 +127,34 @@ vector<string> solucionesPuntos( string letras , conjuntoLetras & cl)
 	    {
 	    
 	      //traducimo las letras actuales a la clave que tendría si estuviera en las posibles soluciones traduccion_diccionario
-	      unsigned long int codigo_primo = conocimiento.traduce( (*candidato) );
+
+	      unsigned long int codigo_primo = conocimiento.traduce(*candidato);
 	  
 	      //comprobamos si se encuentra en las soluciones
-	      if( conocimiento.traduccion_diccionario.count( codigo_primo))
+	      if(  conocimiento.traduccion_diccionario.count( codigo_primo))
 		{
 		  //actualizamos puntuacion_maxima
 		  puntuacion_maxima = nueva_puntuacion; 
 	      
-		  vector<string> nuevas_soluciones  = conocimiento.traduccion_diccionario[codigo_primo];
+		  vector<string> nuevas_soluciones =  conocimiento.traduccion_diccionario[codigo_primo];
 
 		  //añadimos las nuevas soluciones al final del  vector de soluciones a devolver
 		  puntos_soluciones[puntuacion_maxima].insert(puntos_soluciones[puntuacion_maxima].end(),
 							      nuevas_soluciones.begin(),
 							      nuevas_soluciones.end()); 
 		  
-		}  
+		}
+		
 	    } // else potencial de puncuación mayor
-	  
-	  seguirExplorando = C.GeneracionSiguiente();
 	   
 	} // fin for candidato
+      seguirExplorando = C.GeneracionSiguiente();
     } //fin del while de buscar por el árbol
-  
-  vector <string> vacio; 
-  return (puntuacion_maxima > -1)?  puntos_soluciones[ puntuacion_maxima] : vacio; 
+
+  // de esta forma el string no se queda vacío y además vemos la puntuación obtenida
+  puntos_soluciones[puntuacion_maxima].push_back("puntuación obtenida: "+to_string(puntuacion_maxima) ); 
+
+    return puntos_soluciones[ puntuacion_maxima]; 
   
 } // ~~~~~~ soluciones por puntos 
-*/
+

@@ -33,8 +33,6 @@ $(BIN)testdiccionario.out: $(OBJ)testdiccionario.o $(OBJ)diccionario.o
 $(BIN)testletras.out: $(OBJ)testletras.o $(OBJ)letras.o $(OBJ)diccionario.o
 	g++ $^ -o $@
 
-# $(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o  $(OBJ)letras.o $(OBJ)diccionario.o $(OBJ)combinaciones.o 
-# 	g++ -g $^ -o $@
 
 $(BIN)testbiblioteca.out: $(OBJ)testbiblioteca.o $(OBJ)biblioteca.o  $(OBJ)diccionario.o
 	g++ -g $^ -o $@
@@ -48,16 +46,16 @@ $(BIN)testia.out: $(OBJ)testia.o $(OBJ)ia.o $(OBJ)biblioteca.o $(OBJ)combinacion
 
 
 ## ~~~~~~~~ objetos de los test ~~~~~~~~~~
-$(OBJ)testdiccionario.o: $(SRC)testdiccionario.cpp 
+$(OBJ)testdiccionario.o: $(SRC)testdiccionario.cpp  $(OBJ)diccionario.o
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)testletras.o: $(SRC)testletras.cpp
+$(OBJ)testletras.o: $(SRC)testletras.cpp $(OBJ)letras.o
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)testbiblioteca.o: $(SRC)testbiblioteca.cpp 
+$(OBJ)testbiblioteca.o: $(SRC)testbiblioteca.cpp  $(OBJ)biblioteca.o 
 	g++ -c $< -o $@ -I$(INCLUDE)
 
-$(OBJ)testia.o: $(SRC)testia.cpp $(OBJ)ia.o
+$(OBJ)testia.o: $(SRC)testia.cpp $(OBJ)ia.o $(OBJ)letras.o
 	g++ -c $< -o $@ -I$(INCLUDE)
 
 $(OBJ)testcombinaciones.o: $(SRC)testcombinaciones.cpp $(OBJ)combinaciones.o
@@ -83,11 +81,11 @@ $(OBJ)ia.o: $(SRC)ia.cpp $(INCLUDE)ia.h
 
 ################### utilidades ##################
 doxygen:
-	doxygen configure.doxy 
+	doxygen ./doc/configure.doxy 
 	firefox ./doc/html/annotated.html &
 clear:
 	find . -name "*~" -delete
-	@rm -r $(OBJ)* $(BIN)* ./doc/html ./doc/latex ./doc/man ./doc/xml
+	@rm -r $(OBJ)* $(BIN)* ./doc/html ./doc/latex 
 
 #########    comando para ejecutar test    ##########
 

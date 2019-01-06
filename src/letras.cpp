@@ -82,20 +82,22 @@ conjuntoLetras::conjuntoLetras( string fichero_letras)
     {
       
       fentrada >> caracter >> cantidad >> puntos ;
-
+      
       //si no se ha añadido de antes 
       if( validas.find( caracter) == string::npos )
 	{
+	   
 	  validas.push_back( caracter );
 	  letras[ caracter] = Letra(puntos, cantidad);
-	  total_cantidad += cantidad; 
+	  total_cantidad += cantidad;
+
 	}
     }
  
   
   fentrada.close();
 
-  ///<  con el objetivo de que no me machaque las cantidades
+  ///<  con el objetivo de que no me machaque las cantidades ni puntos
   cargado_de_diccionario = false; 
 } //~~~~~ constructor a partir de fichero
 
@@ -145,6 +147,7 @@ void conjuntoLetras::incrementa( char c )
     {
       letras[c].fa++;
       letras_contabilizadas++;
+      
       estadistica_actualizada = false; 
     }
 } //~~~~~ incrementa
@@ -153,7 +156,7 @@ void conjuntoLetras::incrementa( char c )
 
 void conjuntoLetras::calculaEstadisticas()
 {
-  if(cargado_de_diccionario == estadistica_actualizada == false)
+  if(cargado_de_diccionario == true && estadistica_actualizada == false)
     {
       int maximo = 0;
       const short int minimo_cantidad = 2; ///< Cantidad mínima de piezas
@@ -250,14 +253,11 @@ int conjuntoLetras::puntuacionAsociada( const multiset<char>  & palabra)
 
 ostream & operator<<( ostream & os, conjuntoLetras & C)
 {
-  //INTRODUCIR VARIABLE DE SI ES CON FICHERO
-  //veo la variable cargado_de_diccionario inutil para esta implementación 
-  
   // actualizamos las estadísticas por si no lo estuvieran 
   C.calculaEstadisticas();
 
   //procedemos a mostrar en pantalla los resultados 
-  os << right << setw(7)<<"Letra"
+  os << right << setw(7)   << "Letra"
      << right << setw( 15) << "Cantidad"
      << right << setw( 15) << "Puntuación"
     // << right << setw( 21) << "Frecuencia absoluta"

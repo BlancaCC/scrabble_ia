@@ -6,6 +6,11 @@
 #include "letras.h"
 #include "diccionario.h"
 
+
+#include <vector>
+#include <set>
+#include <string>
+
 using namespace std;
 
 
@@ -44,7 +49,22 @@ int main( int argc , char* argv [])
   //vamos a pedirle que nos genere un par de letras
   cout << "Sus letras son " << C.sacaLetras( 8) << endl;
 
-  //comprobemo si nos devuelve las puntuaciones de una palabra
-  cout << " La puntuacion de la palabra tomate es " << C.puntuacionAsociada( "tomate") << endl ; 
+  //comprobemos si nos devuelve las puntuaciones de una palabra
+ 
+  vector<string> palabras =  {"hola", "tomate", "riquirdi"};
+
+  for( auto i= palabras.begin();  i !=palabras.end(); i++)
+    {
+
+      multiset<char> conjunto;
+      for ( auto c =  i->begin(); c !=  i->end(); c++)
+	conjunto.insert(*c);
+      
+      cout << "La puntuacion de la palabra " << *i << " es "<< endl
+	   << " en string: "<< C2.puntuacionAsociada( *i ) << endl
+	   << " en conjunto: "<< C2.puntuacionAsociada( conjunto) << endl
+	   << endl; 
+    }
+
   
 }
