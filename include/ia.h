@@ -19,6 +19,13 @@
 using namespace std; 
 
 
+/**
+   @brief Inteligencia artificial  para jugar  
+   Este clase conecta la estructuras combinación y biblioteca con el objetivo de similar a un jugador. 
+   En biblioteca tiene disposión a las soluciones válidas
+   Con combinaciones va explorando las posibles soluciones
+
+ */
 class IA
 {
  private:
@@ -39,6 +46,8 @@ class IA
      @brief Soluciones por longitud
      @param letras: total de letras que se puede combinar
      @return vector con soluciones
+      El último mensaje del vector tienen la puntuación de las soluciones encontradas, 
+      En el caso de no encontrarlas contiene un mensaje indicativo. 
    */
   vector<string> solucionesLongitud( string letras);
 
@@ -46,6 +55,8 @@ class IA
      @brief Solucioens por puntuación
      @param letras: total de letras que se puede combinar
      @return vector con soluciones
+     El último mensaje del vector tienen la puntuación de las soluciones encontradas, 
+     En el caso de no encontrarlas contiene un mensaje indicativo. 
    */
   vector<string> solucionesPuntos( string letras, conjuntoLetras & cl); 
   
@@ -55,9 +66,8 @@ class IA
   /**
      @brief Constructor de la IA
      @param Diccionario de referencia con el que jugar
-     @param Modo de juego con el que jugar 
+     @param Modo de juego, por puntos-> true, por longitud -> false
    */
-  //El diccionario se podría poner constante CReO
   IA ( Diccionario & D, bool modo_puntos, string validas = "abcdefghijklmnopqrstuvwxyz");
 
   /**
@@ -65,7 +75,8 @@ class IA
      @param letras con las que jugar 
      @param conuntoLetras utilizada para consultas puntuaciones
      @return mejores soluciones encontradas 
-     ( si el vector está vacío significa que no ha encontrado ninguna solución)
+    El último mensaje del vector tienen la puntuación de las soluciones encontradas, 
+    En el caso de no encontrarlas contiene un mensaje indicativo. 
    */
 
   vector<string> mejorSolucion( string letras, conjuntoLetras & cl);   

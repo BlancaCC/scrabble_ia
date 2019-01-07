@@ -1,7 +1,7 @@
 /**
    @file biblioteca.cpp 
    @author Blanca Cano Camarero 
-   @brief Implementación de inteligencia artificial para jugar al scrabble 
+   @brief Implementación de tabla hash que contendrá las palabras con las mismas letras
    @date enero de 2019
  */
 
@@ -77,13 +77,13 @@ void Biblioteca::traduceDiccionario( Diccionario & soluciones)
     {
 
       
-      ///< calculamos la entrada de la tabla hash correspondiente
+      //  calculamos la entrada de la tabla hash correspondiente
       unsigned long int entrada = traduce((*cit)); 
       traduccion_diccionario[ entrada ].push_back( (*cit));
     }
 }  //~~~~~~~ traduceDiccionario 
 
-///< OJO para mejorar la eficiencia algo no se comprueba que el caracter esté registrado en el diccionario de los primos 
+/// OJO para mejorar la eficiencia algo no se comprueba que el caracter esté registrado en el diccionario de los primos 
 unsigned long int Biblioteca::traduce ( string validas)
 {
   
@@ -92,10 +92,10 @@ unsigned long int Biblioteca::traduce ( string validas)
     indice *= primos[ validas[i] ];
 
   return indice; 
-} // traudce 
+} // ~~~~traudce 
 
 
-///< OJO para mejorar la eficiencia algo no se comprueba que el caracter esté registrado en el diccionario de los primos 
+///  OJO para mejorar la eficiencia algo no se comprueba que el caracter esté registrado en el diccionario de los primos 
 unsigned long int Biblioteca::traduce ( multiset<char> validas)
 {
   
@@ -104,7 +104,7 @@ unsigned long int Biblioteca::traduce ( multiset<char> validas)
     indice *= primos[*c ];
 
   return indice; 
-} // traudce 
+} //~~~~ traudce 
 
 
 Biblioteca & Biblioteca::operator=( const Biblioteca  & B) 

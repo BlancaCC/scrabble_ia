@@ -42,7 +42,8 @@ int main( int argc, char * argv [] )
     }
   else
     cout << " Usted ha seleccionado jugar en modo longitud" << endl;
-
+  
+  cout << "========================= <3 =======================" << endl; 
 
   //Comienza de juego
 
@@ -55,13 +56,15 @@ int main( int argc, char * argv [] )
       // mostramos letras posibles
       letras = cl.sacaLetras( cantidad );
       cout << "Estas son las " << cantidad << " letras pedidas " << letras << endl
+	   << "================================================" << endl
 	   << "No sea tímido e introduzca una solución: ";
       // pedimos puntos y calculamos puntos teóricos
       cin >> respuesta_usuario;
 
+      cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<< endl; 
       cout << "Puntos obtenidos en el teórico caso de que su repuesta sea válida, le dejo a usted mismo que se juzgue: " << endl
 	   << ( (modo_puntos)?cl.puntuacionAsociada( respuesta_usuario):
-		respuesta_usuario.length() ) << endl;  
+		respuesta_usuario.length() ) << endl<< endl;  
       
       // calculamos soluciones
       cout << "Las mejores soluciones que yo conozco son: " << endl; 
@@ -86,6 +89,6 @@ int main( int argc, char * argv [] )
     }
 
   cout << " Fin del juego, espero que haya tenido una experiencia agradable "
-       << " positiva, revitalizante, divertida y repetible" << endl;
+       << " positiva, revitalizante, divertida y repetible :D " << endl;
     
 }

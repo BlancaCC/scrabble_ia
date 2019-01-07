@@ -24,10 +24,11 @@
 using namespace std; 
 
 /**
-   @brief TDA IA Jugador del scrabble
+   @brief TDA que crea una tabla hash indexada con producto de primos
+   Con las palabras del diccionario pasado :D
 
  */
-//class IA
+
 class  Biblioteca 
 {
  private:
@@ -43,7 +44,11 @@ class  Biblioteca
   
  public: 
   // ~~~~~~~~~~~~ variables y métodos de carga ~~~~~~~~~~~
-  
+
+  // como índice en vez del producto de primos se podría haber utilizado un multiset de char
+  /**
+     @return tabla hash con las entradas los primos producto de los primos asociados a cada letra
+   */
   map< unsigned  long int, vector<string> > traduccion_diccionario;
 
 
@@ -55,7 +60,7 @@ class  Biblioteca
 
   /**
      @brief Devuelve el primo asociado a una combinación 
-     @param validad combinacio de letras 
+     @param validas:  combinación de letras de las que se desea su entrada en la tabla hash
 
    */
   unsigned long int traduce( string validas);
@@ -63,15 +68,15 @@ class  Biblioteca
 
    /**
      @brief Devuelve el primo asociado a una combinación 
-     @param validad combinacio de letras 
+     @param validas:   combinación de letras 
 
    */
   unsigned long int traduce( multiset<char> validas); 
 
- 
- public:
 
-  ///< CONSTRUCTOR POR DEFECTO
+  /**
+     @brief Constructor por defecto
+   */
   Biblioteca()
     {
       map< char, int> null;
@@ -83,7 +88,7 @@ class  Biblioteca
   /**
      @brief constructor de la Biblioteca
      @param dicccionario, vocabulario del que dispondrá nuestra IA
-     @param letras válidas x
+     @param letras válidas 
    */
   Biblioteca( Diccionario & soluciones, string validas = "abcdefghijklmnopqrstuvwxyz" );
 
